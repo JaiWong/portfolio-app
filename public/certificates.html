@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Certificates – Jairus Wong</title>
+  <link rel="stylesheet" href="./certificates.css" />
+</head>
+
+<body>
+    <!-- BACK BUTTON -->
+  <a href="/" class="back-btn">← Back to Home</a>
+
+  <h1 class="title">My Certificates</h1>
+
+  <!-- SEARCH BAR -->
+  <input
+    type="text"
+    id="search"
+    placeholder="Search certificates..."
+    class="search-bar"
+  />
+
+  <!-- GRID -->
+  <div id="cert-container" class="grid"></div>
+
+  <!-- MODAL PREVIEW -->
+  <div id="pdf-modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="close-modal" class="close-btn">✕</button>
+      <iframe id="pdf-frame"></iframe>
+    </div>
+  </div>
+
+  <script>
+    // List all certificates in /public/certs
+    const certFiles = [
+      "CertificateOfCompletion_Agile Foundations.pdf",
+      "CertificateOfCompletion_Create a Quick Clean and Cheap Website with Bootstrap Templates.pdf",
+      "CertificateOfCompletion_HandsOn Introduction React (1).pdf",
+      "CertificateOfCompletion_HandsOn Introduction React.pdf",
+      "CertificateOfCompletion_Illustrator 2023 Quick Start.pdf",
+      "CertificateOfCompletion_ISTQB Foundation Cert Prep.pdf",
+      "CertificateOfCompletion_JavaScript Enhancing the DOM.pdf",
+      "CertificateOfCompletion_Mastering Common Interview Questions.pdf",
+      "CertificateOfCompletion_Node.js Essential Training.pdf",
+      "CertificateOfCompletion_Photoshop 2021 Quick Start.pdf",
+      "CertificateOfCompletion_Programming Foundations APIs and Web Services 2019.pdf",
+      "CertificateOfCompletion_Project Management Foundations Requirements.pdf",
+      "CertificateOfCompletion_Software Testing Foundations Bug Writing and Management.pdf",
+      "CertificateOfCompletion_Software Testing Foundations Test Planning (1).pdf",
+      "CertificateOfCompletion_Software Testing Foundations Test Planning.pdf",
+      "CertificateOfCompletion_Software Testing Foundations Test Techniques (1).pdf",
+      "CertificateOfCompletion_Software Testing Foundations Test Techniques.pdf",
+      "CertificateOfCompletion_Unit Testing and Test Driven Development in Python.pdf",
+      "CertificateOfCompletion_UX Design 3 Creating Personas.pdf",
+      "CertificateOfCompletion_What Is Scrum (1).pdf",
+      "CertificateOfCompletion_What Is Scrum.pdf"
+    ];
+
+    const container = document.getElementById("cert-container");
+    const modal = document.getElementById("pdf-modal");
+    const pdfFrame = document.getElementById("pdf-frame");
+    const closeModal = document.getElementById("close-modal");
+    const searchInput = document.getElementById("search");
+
+    // Render certificates
+    function renderCerts(filter = "") {
+      container.innerHTML = "";
+
+      certFiles
+        .filter(name => name.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(name => {
+          const card = document.createElement("div");
+          card.className = "cert-card";
+
+          card.innerHTML = `
+            <div class="icon">📄</div>
+            <p>${name.replace(/_/g, " ").replace(".pdf", "")}</p>
+          `;
+
+          card.addEventListener("click", () => {
+            pdfFrame.src = "./certs/" + name;
+            modal.classList.remove("hidden");
+          });
+
+          container.appendChild(card);
+        });
+    }
+
+    renderCerts();
+
+    // SEARCH
+    searchInput.addEventListener("input", (e) => {
+      renderCerts(e.target.value);
+    });
+
+    closeModal.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      pdfFrame.src = "";
+    });
+
+    // Close modal when clicking outside
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.add("hidden");
+        pdfFrame.src = "";
+      }
+    });
+  </script>
+</body>
+</html>
